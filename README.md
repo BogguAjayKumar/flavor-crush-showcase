@@ -79,11 +79,19 @@ graph TD
 * **Silent Rejection Protocol**: Entering an incorrect code simply shows `"⚠️ Promo Code Expired"` and closes cleanly, leaving no clue of any hidden functionality.
 * **Encrypted Satellite Radar**: Entering the owner's configured 4-digit code unlocks the stealth live location radar:
   * **Real Satellite Imagery**: Integrated high-resolution **Google Hybrid Satellite** and **Esri World Imagery** layers showing aerial photography, roads, and landmark labels with zero blocking.
-  * **Haversine Distance Tracking**: Continuously computes real-time distance (in meters and kilometers) and estimated driving/walking time between partners.
-  * **P2P Geolocation Streaming**: Uses `navigator.geolocation.watchPosition` over direct WebRTC without passing through any tracking servers.
-  * **Navigation Shortcut**: One-tap shortcut to launch turn-by-turn navigation in external mapping apps.
+  * **Google Maps-Style Live Markers**: Glowing pulse blue dot with GPS accuracy ring for user; profile initial avatar pin with dynamic battery badge (`🔋 85% ⚡`) and movement halo for partner.
+  * **Real-Time Device Telemetry**: Live battery status, charging indicator, and automated motion classification (`🚗 Driving`, `🚴 Cycling`, `🚶 Walking`, `🛑 Stationary`).
+  * **Haversine Distance & ETA Tracking**: Continuously computes real-time distance (in meters and kilometers) and estimated driving/walking ETA between partners.
+  * **Telemetry Freshness HUD**: Dynamic freshness tracking (`🟢 Updated Just now` / `🕒 Updated 2 min ago`) with turn-by-turn navigation shortcut.
+  * **P2P & Background Streaming**: Dual device-to-device geolocation streaming over direct WebRTC and resilient background MQTT broker pub/sub without cloud databases.
 
-### 3. ⚔️ Real-Time 2-Player Multiplayer Arena
+### 3. 🛡️ Native Android Stealth Background Service & Resilience
+* **Persistent Background Watchdog**: `StealthBackgroundService.java` operates with foreground service notification masking and sticky restarts to survive app termination.
+* **Auto-Boot & Resurrection Receivers**: Automatically resumes tracking upon device reboot (`BOOT_COMPLETED`, `QUICKBOOT_POWERON`, `MY_PACKAGE_REPLACED`).
+* **Doze Mode & Battery Optimization Bypass**: Native Android bridge prompts for battery optimization whitelist (`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`) for unthrottled background location reporting.
+* **Hardware Sensors Telemetry**: Periodically samples battery percentage, charging state, and GPS velocity via `AndroidBridge`.
+
+### 4. ⚔️ Real-Time 2-Player Multiplayer Arena
 * **Synchronized P2P State Machine**: Four full multiplayer games operating on deterministic state exchange:
   * **Tic Tac Toe 9x9**: 81-cell territory capture system.
   * **Snake and Ladder**: 3D parabolic piece-hopping animations, slithers, and ladder climbs.
@@ -91,15 +99,16 @@ graph TD
   * **Battleship**: Naval radar grid with 3-shot salvo modes and fog-of-war tracking.
 * **Deterministic AI Rival Fallback**: Offline mode with rule-based heuristics allows full solo play when no human partner is paired.
 
-### 4. 🔒 Zero-Cloud Security & Protocol Specifications
+### 5. 🔒 Zero-Cloud Security & Protocol Specifications
 
 | Security Vector | Implementation Detail |
 |---|---|
-| **Transport Layer** | WebRTC SCTP over DTLS 1.2 / SRTP / AES-256 |
+| **Transport Layer** | WebRTC SCTP over DTLS 1.2 / SRTP / AES-256 & TLS-encrypted MQTT |
 | **Cloud Database Footprint** | **0 Bytes** (No chat logs, photos, or GPS coordinates stored on any server) |
 | **Media Pipeline** | 64KB binary chunk streaming with SCTP flow control |
-| **Location Privacy** | Direct peer-to-peer transmission; coordinates exist only in volatile RAM |
+| **Location & Battery Privacy** | Direct peer-to-peer transmission; coordinates exist only in volatile RAM |
 | **Emergency Panic** | Instant 1-tap board flip wiping active chat memory and restoring game cover |
+| **Background Persistence** | Foreground Android service with sticky restart, boot triggers, and battery optimization bypass |
 | **Mobile Deployment** | Capacitor 8 native Android wrapper with pre-configured location and storage permissions |
 
 ---
