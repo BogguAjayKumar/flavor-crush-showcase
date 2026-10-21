@@ -74,10 +74,17 @@ graph TD
 * **Live Transfer HUD**: Real-time progress updates displaying streaming speed (MB/s), percentage complete, elapsed time, and remaining bytes.
 * **Direct Device Download**: Upon reassembly into a native `Blob`, the receiver can download the untouched original file directly into their device's storage with a single tap.
 
-### 2. 🧭 Disguised Promo-Key Live Location & Satellite Radar HUD
+### 2. 🧭 Symmetrical On-Demand "Shopkeeper / Customer" Live Location & Satellite Radar HUD
 * **Camouflaged Interface**: On the main arcade screen, an innocent button labeled **"🎁 Enter Promo Code"** sits alongside standard game counters.
 * **Silent Rejection Protocol**: Entering an incorrect code simply shows `"⚠️ Promo Code Expired"` and closes cleanly, leaving no clue of any hidden functionality.
-* **Encrypted Satellite Radar**: Entering the owner's configured 4-digit code unlocks the stealth live location radar:
+* **Symmetrical On-Demand Architecture (The Shopkeeper Model)**:
+  * **0% Idle Battery Drain**: Neither device runs GPS in the background when not actively monitored.
+  * **Mutual & Bidirectional ("Vice Versa")**: Both devices act as equal peers. Whichever person opens the Radar HUD becomes the **Customer**, instantly pinging the remote partner's phone with `LIVE_LOC_REQ` and maintaining a 4-second keep-alive heartbeat.
+  * **On-Demand GPS Hardware Wake-Up**: The other person's phone acts as the **Shopkeeper**, waking up high-precision GPS hardware (1.5s / 0m) and streaming real-time coordinates, speed, heading, and battery telemetry.
+  * **Instant Power-Down on Exit**: As soon as the viewer minimizes or closes the app, an immediate `LIVE_LOC_STOP` packet is dispatched, and the remote phone shuts down its GPS chip to 100% idle.
+  * **15-Second Fail-Safe Watchdog**: If the viewer's phone crashes, loses network, or is swiped from RAM without a clean exit, the serving phone's 15-second sliding watchdog timer automatically expires and powers down the GPS hardware.
+  * **Mutual & Simultaneous**: If both users open the app at the same time, both stream live coordinates to each other in full bidirectional radar mode.
+* **Encrypted Satellite Radar HUD Features**:
   * **Real Satellite Imagery**: Integrated high-resolution **Google Hybrid Satellite** and **Esri World Imagery** layers showing aerial photography, roads, and landmark labels with zero blocking.
   * **Google Maps-Style Live Markers**: Glowing pulse blue dot with GPS accuracy ring for user; profile initial avatar pin with dynamic battery badge (`🔋 85% ⚡`) and movement halo for partner.
   * **Real-Time Device Telemetry**: Live battery status, charging indicator, and automated motion classification (`🚗 Driving`, `🚴 Cycling`, `🚶 Walking`, `🛑 Stationary`).
@@ -85,11 +92,13 @@ graph TD
   * **Telemetry Freshness HUD**: Dynamic freshness tracking (`🟢 Updated Just now` / `🕒 Updated 2 min ago`) with turn-by-turn navigation shortcut.
   * **P2P & Background Streaming**: Dual device-to-device geolocation streaming over direct WebRTC and resilient background MQTT broker pub/sub without cloud databases.
 
-### 3. 🛡️ Native Android Stealth Background Service & Resilience
-* **Persistent Background Watchdog**: `StealthBackgroundService.java` operates with foreground service notification masking and sticky restarts to survive app termination.
-* **Auto-Boot & Resurrection Receivers**: Automatically resumes tracking upon device reboot (`BOOT_COMPLETED`, `QUICKBOOT_POWERON`, `MY_PACKAGE_REPLACED`).
-* **Doze Mode & Battery Optimization Bypass**: Native Android bridge prompts for battery optimization whitelist (`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`) for unthrottled background location reporting.
-* **Hardware Sensors Telemetry**: Periodically samples battery percentage, charging state, and GPS velocity via `AndroidBridge`.
+### 3. 🛡️ Native Android Stealth Background Service & Symmetrical On-Demand Engine
+* **Symmetrical On-Demand Lifecycle**: `StealthBackgroundService.java` operates in `TIER_IDLE` with all GPS, Network, and Passive location listeners detached until awakened by the partner's `LIVE_LOC_REQ`.
+* **Hardware GPS Boost & Auto-Sleep**: Spikes to high-precision hardware GPS (1.5s / 0m) upon partner request, and automatically powers down the GPS hardware via `shopkeeperWatchdogRunnable` when heartbeats cease or `LIVE_LOC_STOP` is received.
+* **Persistent Background Watchdog**: Background service survives app closing and OS memory pressure via foreground notification masking and sticky restarts to receive inbound calls, messages, and location requests.
+* **Auto-Boot & Resurrection Receivers**: Automatically resumes standby upon device reboot (`BOOT_COMPLETED`, `QUICKBOOT_POWERON`, `MY_PACKAGE_REPLACED`).
+* **Doze Mode & Battery Optimization Bypass**: Native Android bridge prompts for battery optimization whitelist (`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`) for unthrottled on-demand location reporting.
+* **Hardware Sensors Telemetry**: Samples battery percentage, charging state, and GPS velocity via `AndroidBridge`.
 
 ### 4. ⚔️ Real-Time 2-Player Multiplayer Arena
 * **Synchronized P2P State Machine**: Four full multiplayer games operating on deterministic state exchange:
