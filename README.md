@@ -18,8 +18,12 @@
 **Flavor Crush** is a dual-layer casual gaming and covert communication platform engineered with zero cloud database reliance. It bridges casual gaming ergonomics with an enterprise-grade peer-to-peer (P2P) steganographic communication engine:
 
 1. **The Game Arcade Layer**:
-   * **3-in-1 Solo Arcade**: Cascading Match-3 puzzle engine (54 progressive levels), 100% mathematically solvable Hamiltonian Flow Free puzzle with AI hint assistant, and a 60fps canvas Fruit Slice blade action engine.
+   * **3-in-1 Solo Casual Arcade**: Cascading Match-3 puzzle engine (54 progressive levels), 100% mathematically solvable Hamiltonian Flow Free puzzle with AI hint assistant, and a 60fps canvas Fruit Slice blade action engine.
+   * **Cubic Rush (3D Endless Flight Runner)**: High-speed voxel/cubic 3D endless flight runner (spiritual successor to *Jet Rush*) powered by Three.js. Features 6 custom low-poly jets, procedural seeded obstacle tracks, shield bubbles, hold-to-auto-fire blasters, and speed-boost score multipliers.
+   * **Mobile-First Dual-Viewport Split-Screen**: WebGL scissor/viewport local multiplayer with dynamic orientation awareness (portrait face-to-face 180° inverted mode or landscape side-by-side) and isolated multi-touch controls.
+   * **Real-Time Online Multiplayer**: Lightweight WebSocket signalling server synchronizing shared obstacle seeds, ready checks, live HUD telemetry strips, and 10-second disconnect grace periods.
    * **4-Game 2-Player Multiplayer Arena**: Turn-based live P2P duels over encrypted WebRTC data channels featuring 9x9 Multi-Grid Tic Tac Toe, 3D Hopping Snake and Ladder, 2-Player Ludo with star safeties, and 10x10 Fog-of-War Battleship naval warfare (with local deterministic AI rival fallbacks).
+   * **Clean White & Vibrant Colourful UI System**: All menus, dashboards, hangars, and game boards adopt a pristine, bright white background with vivid, cheerful pastel and neon color palettes. Zero dark theme dominance.
 2. **The Covert Peer-to-Peer Layer**:
    * Disguised behind the arcade games is an end-to-end encrypted covert communication suite that allows partners to converse, stream high-fidelity media, and share real-time GPS locations without drawing attention from onlookers.
    * A discrete card-flip gesture rotates the screen 180° into a private pad protected by a camouflaged 4-digit promo key. Incorrect entries silently dismiss as an `"Expired Game Voucher"`.
@@ -108,7 +112,22 @@ graph TD
   * **Battleship**: Naval radar grid with 3-shot salvo modes and fog-of-war tracking.
 * **Deterministic AI Rival Fallback**: Offline mode with rule-based heuristics allows full solo play when no human partner is paired.
 
-### 5. 🔒 Zero-Cloud Security & Protocol Specifications
+### 5. 🚀 Cubic Rush — 3D Endless Flight Runner & Dual-Viewport Split-Screen
+* **Spiritual Successor to "Jet Rush"**: Complete release-ready 3D casual arcade endless flight runner built in self-contained Three.js (r128) with bright white skyway aesthetic, pastel corridor fog, and vibrant neon obstacles.
+* **Seeded Procedural Skyway Generator**: Uses a deterministic PRNG seed (`seedValue()` / `randSeed()`) so both players in local split-screen or online multiplayer face the exact same sequence of moving cubes, gate gaps, rotating laser bars, and bonus pickups.
+* **6 Low-Poly Jet Models with Hangar Progression**:
+  * **Comet** (Balanced starter), **Petal** (High agility / drift), **Prism** (Rapid fire rate), **Bolt** (Hyper speed / heavy boost), **Orbit** (Extended shield duration), and **Spectrum** (Legendary flagship).
+  * 3D live hangar preview, real-time stat bars, coin unlocks, and local storage persistence.
+* **Mobile-First Split-Screen with WebGL Scissor/Viewport**:
+  * Single renderer with dual camera viewports running at a smooth 60 FPS.
+  * **Portrait Mode**: Screen divides horizontally (top/bottom). Includes an optional **"Face-to-Face" mode** rotating the top player's view and touch controls by 180° for opposite-side head-to-head play.
+  * **Landscape Mode**: Seamlessly splits vertically (left/right) with independent mini HUDs and crashed overlays.
+  * **Live Orientation Detection**: Responds to resize/orientationchange with smooth ~300ms pause and re-layout without losing match state.
+* **Online Multiplayer Protocol**:
+  * Lightweight Node.js WebSocket server (`server/cubic-rush-server.js`) supporting 5-character room codes, ready checks, synchronized countdowns, and 15–20 Hz state snapshot interpolation.
+  * **Graceful Disconnect Recovery**: 10-second reconnect window before awarding victory to the remaining pilot, live round-trip ping latency indicator, and dedicated offline recovery screen.
+
+### 6. 🔒 Zero-Cloud Security & Protocol Specifications
 
 | Security Vector | Implementation Detail |
 |---|---|
